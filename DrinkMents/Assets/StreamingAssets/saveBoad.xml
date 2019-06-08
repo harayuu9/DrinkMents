@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BoardData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Sender />
-  <Date>2019/9/15</Date>
-  <Time>18:30</Time>
-  <Place>難波</Place>
-  <Money>10000</Money>
-  <People>2</People>
+  <Date>2019/10/9</Date>
+  <Time>12</Time>
+  <Place>梅田</Place>
+  <Money>3000</Money>
+  <People>3</People>
   <Grade>3</Grade>
   <Classs>
-    <string>ゲーム制作</string>
-    <string>ゲームデザイン</string>
     <string>グラフィックデザイン</string>
+    <string>ゲーム企画</string>
+    <string>イラストレーター</string>
   </Classs>
-  <Sex>NO</Sex>
+  <Sex>NONE</Sex>
 </BoardData>
