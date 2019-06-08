@@ -15,10 +15,12 @@ public interface IChatHubReceiver
 	///// </summary>
 	///// <param name="name">参加した人の名前</param>
 	//void OnJoin(string name);
+	void OnUpdateBoard(List<BoardData> boardDatas);
 }
 
 public interface IChatHub : IStreamingHub<IChatHub, IChatHubReceiver>
 {
 	Task AddNewUserData(UserData userData);
+	Task LeaveAsync();
 	Task AddNewBoardData(BoardData boardData);
 }
