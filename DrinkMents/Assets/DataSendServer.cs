@@ -12,8 +12,8 @@ public class DataSendServer : MonoBehaviour, IChatHubReceiver
 	// Start is called before the first frame update
 	void Awake()
 	{
-		//Client側のHubの初期化
-		_channel = new Channel("localhost:12345", ChannelCredentials.Insecure);
+		//Client側のHubの初期化       
+		_channel = new Channel("os3-364-15487.vs.sakura.ne.jp:12345", ChannelCredentials.Insecure);
 		_chatHub = StreamingHubClient.Connect<IChatHub, IChatHubReceiver>(this._channel, this);
 	}
 
