@@ -3,6 +3,7 @@ using MagicOnion.Client;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DataSendServer : MonoBehaviour, IChatHubReceiver
 {
@@ -49,6 +50,12 @@ public class DataSendServer : MonoBehaviour, IChatHubReceiver
 	public async void AddNewBoardData(BoardData data)
 	{
 		await _chatHub.AddNewBoardData(data);
+	}
+
+	public async void BoardAssign(int idx, UserData userData)
+	{
+		await _chatHub.BoardAssign(idx, userData);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 	public void OnUpdateBoard(List<BoardData> boardDatas)

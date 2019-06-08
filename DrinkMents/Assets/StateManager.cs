@@ -80,6 +80,7 @@ public struct BoardData
 	[Key(6)] public int Grade;
 	[Key(7)] public List<string> Classs;
 	[Key(8)] public State Sex;
+	[Key(9)] public List<UserData> Users;
 
 	public override string ToString()
 	{
@@ -130,9 +131,8 @@ public class StateManager : MonoBehaviour
 			init = true;
 			StartCoroutine(DelayLoad(0.5f, "BoardView"));
 		}
-		BoardCreateObject.SetActive(true);
-		InitObject.SetActive(false);
-
+		BoardCreateObject.SetActive(init);
+		InitObject.SetActive(!init);
 		//StartCoroutine(StateView());
 	}
 
@@ -195,6 +195,8 @@ public class StateManager : MonoBehaviour
 		else
 			data.Sex = BoardData.State.NONE;
 
+		data.Users = new List<UserData>();
+		data.Users.Add(MyUserData);
 		FindObjectOfType<DataSendServer>().AddNewBoardData(data);
 		XmlUtil.Seialize(SavePath + "Boad.xml", data);
 		StartCoroutine(DelayLoad(0.5f, "BoardView"));
