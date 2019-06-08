@@ -84,6 +84,9 @@ public struct BoardData
 
 public class StateManager : MonoBehaviour
 {
+	//InitObject BoardCreateObject
+	[SerializeField] private GameObject InitObject, BoardCreateObject;
+
 	[SerializeField] private Text InitClass = null;
 	[SerializeField] private Text InitName = null;
 	[SerializeField] private Text InitNo = null;
@@ -111,6 +114,16 @@ public class StateManager : MonoBehaviour
         Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 #endif
 		Load();
+		if (AllUserData.Count > 0)
+		{
+			BoardCreateObject.SetActive(true);
+			InitObject.SetActive(false);
+		}
+		else
+		{
+			BoardCreateObject.SetActive(false);
+			InitObject.SetActive(true);
+		}
 		foreach(var user in AllUserData)
 		{
 			FindObjectOfType<DataSendServer>().AddNewUserData(user);
