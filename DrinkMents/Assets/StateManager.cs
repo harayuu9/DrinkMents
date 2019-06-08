@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class XmlUtil
@@ -80,6 +81,12 @@ public struct BoardData
 	[Key(7)] public List<string> Classs;
 	[Key(8)] public State Sex;
 
+	public override string ToString()
+	{
+		string str = "作成者:" + Sender.Name;
+		str += "日付:" + Date + ":" + Time + "場所" + Place;
+		return str;
+	}
 }
 
 public class StateManager : MonoBehaviour
@@ -104,31 +111,35 @@ public class StateManager : MonoBehaviour
 	private string SavePath;
 	public static UserData MyUserData;
 	public static List<UserData> AllUserData = new List<UserData>();
-
-    // Start is called before the first frame update
-    void Start()
-    {
+	public static List<BoardData> AllBoardData = new List<BoardData>();
+	private static bool init = false;
+	// Start is called before the first frame update
+	void Start()
+	{
 		SavePath = Application.streamingAssetsPath + "/save";
 		// iOSでは下記設定を行わないとエラーになる
 #if UNITY_IPHONE
         Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 #endif
-		Load();
-		if (AllUserData.Count > 0)
+		if (AllUserData.Count == 0)
+			Load();
+		if (AllUserData.Count > 0 && init == false)
 		{
-			BoardCreateObject.SetActive(true);
-			InitObject.SetActive(false);
+			MyUserData = AllUserData[0];
+			FindObjectOfType<DataSendServer>().AddNewUserData(AllUserData[0]);
+			init = true;
+			StartCoroutine(DelayLoad(0.5f, "BoardView"));
 		}
-		else
-		{
-			BoardCreateObject.SetActive(false);
-			InitObject.SetActive(true);
-		}
-		foreach(var user in AllUserData)
-		{
-			FindObjectOfType<DataSendServer>().AddNewUserData(user);
-			Debug.Log(user.ToString());
-		}
+		BoardCreateObject.SetActive(true);
+		InitObject.SetActive(false);
+
+		//StartCoroutine(StateView());
+	}
+
+	IEnumerator DelayLoad(float second, string name)
+	{
+		yield return new WaitForSeconds(second);
+		SceneManager.LoadScene(name);
 	}
 
 	public void InitSubmit()
@@ -137,9 +148,12 @@ public class StateManager : MonoBehaviour
 		MyUserData.Name = InitName.text;
 		MyUserData.No = InitNo.text;
 		MyUserData.Sex = InitSex.text;
+		FindObjectOfType<DataSendServer>().AddNewUserData(MyUserData);
+		init = true;
 		AllUserData.Add(MyUserData);
 		Debug.Log(MyUserData.ToString());
 		Save();
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 	public void BoardSubmit()
@@ -176,13 +190,14 @@ public class StateManager : MonoBehaviour
 		data.Classs.Add(BoardClasss[2].text);
 		if (BoardSex.text == "男")
 			data.Sex = BoardData.State.YES;
-		else if(BoardSex.text == "女")
+		else if (BoardSex.text == "女")
 			data.Sex = BoardData.State.NO;
 		else
 			data.Sex = BoardData.State.NONE;
 
 		FindObjectOfType<DataSendServer>().AddNewBoardData(data);
 		XmlUtil.Seialize(SavePath + "Boad.xml", data);
+		StartCoroutine(DelayLoad(0.5f, "BoardView"));
 	}
 
 	public void Save()
@@ -192,6 +207,8 @@ public class StateManager : MonoBehaviour
 
 	public void Load()
 	{
+		if (!File.Exists(SavePath + "AllData.xml"))
+			return;
 		AllUserData = XmlUtil.Deserialize<List<UserData>>(SavePath + "AllData.xml");
 	}
 }
