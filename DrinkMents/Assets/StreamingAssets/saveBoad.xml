@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BoardData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Sender />
-  <Date>2019年3月13日日</Date>
-  <Time>20</Time>
-  <Place>多さk多さk</Place>
+  <Date>2019/06/05</Date>
+  <Time>18:00</Time>
+  <Place>梅田梅田</Place>
   <Money>3000</Money>
-  <People>2</People>
-  <Grade>2</Grade>
+  <People>3</People>
+  <Grade>3</Grade>
   <Classs>
-    <string>ゲーム企画</string>
+    <string>ゲーム制作</string>
     <string>ゲーム制作</string>
     <string>ゲーム制作</string>
   </Classs>
