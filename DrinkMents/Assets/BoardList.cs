@@ -14,7 +14,15 @@ public class BoardList : MonoBehaviour
 		{
 			var newObj = Instantiate(obj, transform);
 			newObj.transform.position -= new Vector3(0, i * 50, 0);
-			newObj.GetComponentInChildren<Text>().text = StateManager.AllBoardData[i].ToString();
+			var texts = newObj.GetComponentsInChildren<Text>();
+			texts[0].text = StateManager.AllBoardData[i].ToString();
+			int nowPeople = StateManager.AllBoardData[i].Users.Count;
+			int maxPeople = StateManager.AllBoardData[i].People;
+			texts[1].text = nowPeople.ToString() + "/" + maxPeople.ToString();
+			var tmpi = i;
+			newObj.GetComponentInChildren<Button>().onClick.AddListener(() => { FindObjectOfType<DataSendServer>().BoardAssign(tmpi, StateManager.MyUserData); });
+			if (nowPeople == maxPeople)
+				newObj.SetActive(false);
 		}
 		obj.SetActive(false);
 	}

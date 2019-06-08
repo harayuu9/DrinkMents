@@ -16,4 +16,5 @@ public interface IChatHub : IStreamingHub<IChatHub, IChatHubReceiver>
 	Task AddNewUserData(UserData userData);
 	Task LeaveAsync();
 	Task AddNewBoardData(BoardData boardData);
+	Task BoardAssign(int idx, UserData userData);
 }

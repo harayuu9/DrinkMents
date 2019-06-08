@@ -3,6 +3,7 @@ using MagicOnion.Client;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DataSendServer : MonoBehaviour, IChatHubReceiver
 {
@@ -21,8 +22,8 @@ public class DataSendServer : MonoBehaviour, IChatHubReceiver
 		}
 		DontDestroyOnLoad(gameObject);
 		//Client側のHubの初期化       
-		//_channel = new Channel("localhost:12345", ChannelCredentials.Insecure);
-		_channel = new Channel("os3-364-15487.vs.sakura.ne.jp:12345", ChannelCredentials.Insecure);
+		_channel = new Channel("localhost:12345", ChannelCredentials.Insecure);
+		//_channel = new Channel("os3-364-15487.vs.sakura.ne.jp:12345", ChannelCredentials.Insecure);
 		_chatHub = StreamingHubClient.Connect<IChatHub, IChatHubReceiver>(this._channel, this);
 		firstCheck = true;
 	}
@@ -49,6 +50,12 @@ public class DataSendServer : MonoBehaviour, IChatHubReceiver
 	public async void AddNewBoardData(BoardData data)
 	{
 		await _chatHub.AddNewBoardData(data);
+	}
+
+	public async void BoardAssign(int idx, UserData userData)
+	{
+		await _chatHub.BoardAssign(idx, userData);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 	public void OnUpdateBoard(List<BoardData> boardDatas)
