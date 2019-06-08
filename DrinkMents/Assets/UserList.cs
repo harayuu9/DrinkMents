@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UserList : MonoBehaviour
@@ -16,5 +17,10 @@ public class UserList : MonoBehaviour
 			newObj.GetComponentInChildren<Text>().text = StateManager.AllUserData[i].ToString();
 		}
 		obj.SetActive(false);
+	}
+
+	public void BoardScene()
+	{
+		SceneManager.LoadScene("BoardView");
 	}
 }

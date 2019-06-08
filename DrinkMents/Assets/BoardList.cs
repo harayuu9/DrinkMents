@@ -23,4 +23,9 @@ public class BoardList : MonoBehaviour
 	{
 		SceneManager.LoadScene("SampleScene");
 	}
+
+	public void UserIDView()
+	{
+		SceneManager.LoadScene("UserIDView");
+	}
 }
