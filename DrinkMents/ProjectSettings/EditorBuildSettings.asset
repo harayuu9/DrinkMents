@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UserIDView.unity
     guid: 1e25da94ef875bc4d8e4ea8ebe7c5344
+  - enabled: 1
+    path: Assets/Scenes/BoardView.unity
+    guid: 86a7f5b42dfde28419e4147760476da3
   m_configObjects: {}

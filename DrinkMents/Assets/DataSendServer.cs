@@ -9,22 +9,33 @@ public class DataSendServer : MonoBehaviour, IChatHubReceiver
 	private Channel _channel;
 	private IChatHub _chatHub;
 
+	private bool firstCheck = false;
+
 	// Start is called before the first frame update
 	void Awake()
 	{
+		if (FindObjectsOfType<DataSendServer>().Length > 1)
+		{
+			Destroy(gameObject);
+			return;
+		}
 		DontDestroyOnLoad(gameObject);
 		//Client側のHubの初期化       
 		//_channel = new Channel("localhost:12345", ChannelCredentials.Insecure);
 		_channel = new Channel("os3-364-15487.vs.sakura.ne.jp:12345", ChannelCredentials.Insecure);
 		_chatHub = StreamingHubClient.Connect<IChatHub, IChatHubReceiver>(this._channel, this);
+		firstCheck = true;
 	}
 
 	private async void OnDestroy()
 	{
-		if (alive)
-			await _chatHub.LeaveAsync();
-		await this._chatHub.DisposeAsync();
-		await this._channel.ShutdownAsync();
+		if (firstCheck)
+		{
+			if (alive)
+				await _chatHub.LeaveAsync();
+			await this._chatHub.DisposeAsync();
+			await this._channel.ShutdownAsync();
+		}
 	}
 
 	private bool alive = false;
