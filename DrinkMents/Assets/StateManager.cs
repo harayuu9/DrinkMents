@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class XmlUtil
@@ -104,6 +105,7 @@ public class StateManager : MonoBehaviour
 	private string SavePath;
 	public static UserData MyUserData;
 	public static List<UserData> AllUserData = new List<UserData>();
+	public static List<BoardData> AllBoardData = new List<BoardData>();
 
     // Start is called before the first frame update
     void Start()
@@ -129,6 +131,21 @@ public class StateManager : MonoBehaviour
 			FindObjectOfType<DataSendServer>().AddNewUserData(user);
 			Debug.Log(user.ToString());
 		}
+		StartCoroutine(StateView());
+	}
+
+	IEnumerator StateView()
+	{
+		yield return new WaitForSeconds(2);
+		foreach (var user in AllUserData)
+		{
+			Debug.Log(user.ToString());
+		}
+		foreach(var board in AllBoardData)
+		{
+			Debug.Log(board.Sender + " " + board.Place);
+		}
+		SceneManager.LoadScene("UserIDView");
 	}
 
 	public void InitSubmit()
@@ -137,6 +154,7 @@ public class StateManager : MonoBehaviour
 		MyUserData.Name = InitName.text;
 		MyUserData.No = InitNo.text;
 		MyUserData.Sex = InitSex.text;
+		FindObjectOfType<DataSendServer>().AddNewUserData(MyUserData);
 		AllUserData.Add(MyUserData);
 		Debug.Log(MyUserData.ToString());
 		Save();
@@ -192,6 +210,8 @@ public class StateManager : MonoBehaviour
 
 	public void Load()
 	{
+		if (!File.Exists(SavePath + "AllData.xml"))
+			return;
 		AllUserData = XmlUtil.Deserialize<List<UserData>>(SavePath + "AllData.xml");
 	}
 }
